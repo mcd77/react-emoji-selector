@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>React Emoji Selector</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Simple React Emoji Selector">
+        <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <link rel="stylesheet" href="/styles/text.css">
+    </head>
+    <body style="background-color: black; color: #1DA1F2;">
+        <div id="root"></div>
+        <script type="text/babel">
+
+        //Returns emoji buttons
+        class EmojiDisplay extends React.Component {
+          constructor(props) {
+            super(props);
+            this.handleClick = this.handleClick.bind(this);
+          }
+
+          handleClick(e) {
+            this.props.setSelectedEmoji(e.target.id);
+          }
+
+          render() {
+            let output = [];
+            for (let i = 0; i < this.props.emojiArray.length; i++) {
+              output.push(
+                <button onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "22px", border: "none"}} key={this.props.emojiArray[i]} id={this.props.emojiArray[i]}>
+                {this.props.emojiArray[i]}
+                </button>);
+            }
+            return(
+              <div>
+                {output}
+              </div>
+            );
+          }
+        }
+
+        //Returns emoji selector UI
+        class EmojiSelectorUI extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { selectedButtonId: "0" };
+            this.handleClick = this.handleClick.bind(this);
+          }
+
+          handleClick(e) {
+            this.setState({ selectedButtonId: e.target.id });
+          }
+
+          render() {
+            let emojiArray = [];
+            let emojiHeaderText = "";
+            if (this.state.selectedButtonId === "0") {
+              emojiHeaderText = "Smileys & people";
+              emojiArray = ['😀', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉', '😊', '🙂', '🙃', '☺️',
+              '😋', '😌', '😍', '😘', '😗', '😙', '😚', '😜', '😝', '😛', '🤑', '🤓', '😎', '🤗', '😏', '😶', 
+              '😐', '😑', '😒', '🙄', '🤔', '😳', '😞', '😟', '😠', '😡', '😔', '😕', '🙁', '☹️', '😣', '😖',
+              '😫', '😩', '😤', '😮', '😱', '😨', '😰', '😯', '😦', '😧', '😢', '😥', '😪', '😓', '😭', '😵', 
+              '😲', '🤐', '😷', '🤒', '🤕', '😴', '🤣', '🤤', '🤢', '🤧', '🤠', '🤡', '🤥', '🤩', '🤨', '🤯', 
+              '🤪', '🤬', '🤮', '🤫', '🤭', '🧐'];
+           } else if (this.state.selectedButtonId === "1") {
+             emojiHeaderText = "Animals & nature";
+             emojiArray = ['🐶', '🐱', '🐭', '🐹', '🐰', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐽', '🐸', '🐙',
+              '🐵', '🙈', '🙉', '🙊', '🐒', '🐔', '🐧', '🐦', '🐤', '🐣', '🐥', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🐌', 
+              '🐞', '🐜', '🕷', '🕸', '🦂', '🦀', '🐍', '🐢', '🐠', '🐟', '🐡', '🐬', '🐳', '🐋', '🐊', '🐆', '🐅', '🐃',
+              '🐂', '🐄', '🐪', '🐫', '🐘', '🐐', '🐏', '🐑', '🐎', '🐖', '🐀', '🐁', '🐓', '🦃', '🕊', '🐕', '🐩', '🐈',
+              '🐇','🐿','🐾','🐉','🐲', '🦍', '🦊', '🦌', '🦏', '🦇','🦅', '🦆', '🦉', '🦎', '🦈', '🦐', '🦑', '🦋', '🦓', 
+              '🦒', '🦔', '🦕', '🦖'];
+           } else if (this.state.selectedButtonId === "2") {
+             emojiHeaderText = "Food & drink";
+             emojiArray = ['🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍈', '🍒', '🍑', '🍍', '🍅', '🍆', '🌶',
+              '🍠', '🍴', '🍽', '🍯', '🍞', '🧀', '🍗', '🍖', '🍤', '🍳', '🍔', '🍟', '🌭', '🍕', '🍝', '🌮', '🌯', '🍜', '🍲',
+              '🍥', '🍣', '🍱', '🍛', '🍙', '🍚', '🍘', '🍢', '🍡', '🥥', '🥦', '🥨', '🥩', '🥪', '🥣', '🥫', '🥟', '🥠', '🥡', 
+              '🥧', '🥢', '🥘', '🍧', '🍨', '🍦', '🍰', '🎂', '🍮', '🍬', '🍭', '🍫', '🍿', '🍩', '🍪', '🥤'];
+           } else if (this.state.selectedButtonId === "3") {
+             emojiHeaderText = "Activity";
+             emojiArray = ['🎅', '🎩', '🎓', '🎒', '🎄', '🎍', '🎋', '🎃', '🎯', '🎫', '🎭', '🎨', '🎪', '🎬', '🎤', '🎧', '🎼', 
+             '🎹', '🎷', '🎺', '🎸', '🎻', '🎰', '🎡', '🎢', '🎠', '🎑', '🌠', '🎇', '🎆', '💒', '🎥', '🚬', '🎈', '🎏', '🎊', '🎉',
+             '🎎', '🎐', '🎌', '🎦', '🎵', '🎶', '🎴']
+           } else if (this.state.selectedButtonId === "4") {
+             emojiHeaderText = "Travel & places";
+             emojiArray = ['⛳', '⛷', '⛸', '🏊', '⛹', '🚴', '🚵', '🏇', '🚣', '🛀', '🚗', '🚕', '🚙', '🚘', '🚖', '🚌', 
+             '🚍', '🚎', '🚐', '🛣', '🏎', '🏍,', '🚲', '🚓', '🚑', '🚒', '🚔', '🚨', '🚚', '🚛', '🚜', '🚧', '⛽', '🚏', '🚦', '🚥',
+             '🚡', '🚠', '🚟', '🚃', '🚋', '🚝', '🚄', '🚅', '🚈', '🚞', '🚂', '🚆', '🚇', '🚊', '🚉', '🛤', '🚁', '🛩', '✈', '🛫', 
+             '🛬', '💺', '🚀', '⛵', '🛥', '🚤', '⛴', '🛳', '⚓', '🚢', '🚽', '🚿', '🛁', '🚪', '⛱', '🗿', '🚩'];
+           } else if (this.state.selectedButtonId === "5") {
+             emojiHeaderText = "Objects";
+             emojiArray = ['🏹', '🎣', '🛀', '🎫', '🎟', '🎭', '🎨', '🎬', '🎤', '🎧', '🎼', '🎹', '🎷', '🎺', '🎸', '🎻', '🎮', '🎲', 
+             '🎰', '🎳', '🏁', '💺', '⛲', '🎑', '⛺', '🎇', '🎆', '⌚', '📱', '📲', '💻', '⌨', '🖥', '🖨', '🖱', '🖲', '🕹', '🗜', '💽',
+             '💾', '💿', '📀', '📼', '📷', '📸', '📹', '🎥', '📽', '🎞', '📞', '☎', '📟', '📠', '📺', '📻', '🎙', '🎚', '🎛', '⏱', '⏲', 
+             '⏰', '🕰', '⏳', '⌛', '📡', '🔋', '🔌', '💡'];
+           } else if (this.state.selectedButtonId === "6") {
+             emojiHeaderText = "Symbols";
+             emojiArray = ['📴', '📳', '🈶', '🈚', '🈸', '🈺', '🆚', '🉑', '💮', '🉐', '🈴', '🈵', '🈲','🆎', '🆑', '🆘', '⛔', '📛', '🚫',
+             '❌', '⭕', '💢', '🚷', '🚯', '🚳', '🚱', '🔞', '📵', '❗', '❕', '❓', '❔', '💯', '🔅', '🔆', '🔱','🚸', '🔰', '🈯', '💹', '❎',
+             '✅', '💠', '🌀', '➿', '🌐', '🏧', '🛂', '🛃', '🛄', '🛅', '🚭', '🚾', '🚹', '🚺', '🚼', '🚻', '🚮', '🎦', '📶', '🈁', '🆖', '🆗', 
+             '🆙', '🆒', '🆕', '🆓', '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
+           }
+            return (
+              <div style={{width: "250px", height: "250px", overflowY:"scroll", borderColor: "gray", borderWidth: "2px", borderStyle: "solid"}}>
+                  <button id="0" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    😊
+                  </button>
+                  <button id="1" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    🐻
+                  </button>
+                  <button id="2" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    🍔
+                  </button>
+                  <button id="3" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    ⚽
+                  </button>
+                  <button id="4" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    🚘
+                  </button>
+                  <button id="5" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    💡
+                  </button>
+                  <button id="6" onClick={this.handleClick} style={{backgroundColor:"black", fontSize: "27px", border: "none"}}>
+                    🔣
+                  </button>
+                  <h3 style={{backgroundColor:"black", fontSize: "22px", borderBottom: "2px solid",
+                  borderTop: "2px solid", marginTop: "0px", paddingTop: "7px", paddingBottom: "3px", borderColor: "gray",
+                  color: "white"}}>
+                    {emojiHeaderText}
+                  </h3>
+                  <EmojiDisplay emojiArray={emojiArray} setSelectedEmoji={this.props.setSelectedEmoji}/>
+              </div>
+            );
+          }
+        }
+        
+        //Returns emoji selector button. onClick displays/hides emoji selector UI 
+        class EmojiSelectorButton extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { selected: false };
+            this.handleClick = this.handleClick.bind(this);
+          }
+
+          handleClick(e) {
+            this.setState({ selected: this.state.selected ? false:true });
+          }
+
+          render() {
+            if (this.state.selected) {
+              return (
+                <div>
+                  <button onClick={this.handleClick} style={{backgroundColor:"black",  color: "#1DA1F2", fontSize: "27px", border: "none"}}>
+                    ☺
+                  </button>
+                  <EmojiSelectorUI setSelectedEmoji={this.props.setSelectedEmoji}/>
+                </div>
+              );
+            } else {
+              return (
+                <div>
+                  <button onClick={this.handleClick} style={{backgroundColor:"black",  color: "#1DA1F2", fontSize: "27px", border: "none"}}>
+                    ☺
+                  </button>
+                </div>
+              );
+            }
+          }
+        }
+
+        class TextAreaOutput extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { value: ""};
+            this.handleChange = this.handleChange.bind(this);
+          }
+
+          static getDerivedStateFromProps(props, state) {
+              state.value = state.value + props.selectedEmoji;
+              return state;
+          }
+
+          handleChange(e) {
+            this.props.setSelectedEmoji("");
+            this.setState({value: e.target.value});
+          }
+          
+          render() {
+            return (
+              <div>
+                <textarea value={this.state.value} onChange={this.handleChange} style={{width: "450px", height: "150px", backgroundColor:"black",  color: "gray", fontSize: "27px", borderColor: "gray"}}>
+                </textarea>
+              </div>
+            );
+          }
+        }
+
+        class App extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = {selectedEmoji : ""};
+            this.setSelectedEmoji = this.setSelectedEmoji.bind(this);
+          }
+
+          setSelectedEmoji(value) {
+            this.setState({selectedEmoji: value});
+          }
+
+          render() {
+            return (
+              <div>
+                <h1>Emoji Selector</h1>
+                <TextAreaOutput selectedEmoji={this.state.selectedEmoji} setSelectedEmoji={this.setSelectedEmoji}/>
+                <EmojiSelectorButton setSelectedEmoji={this.setSelectedEmoji}/>
+              </div>
+            );
+          }
+        }
+
+        ReactDOM.render(
+          <div>
+            <App/>
+          </div>,
+          document.getElementById('root')
+        );
+        </script>
+    </body>
+</html>
